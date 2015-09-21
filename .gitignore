@@ -1,0 +1,5 @@
+coverage
+tmp
+pkg
+Gemfile.lock
+*.gem

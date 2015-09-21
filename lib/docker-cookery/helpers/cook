@@ -1,0 +1,102 @@
+#!/usr/bin/env ruby
+
+require 'clamp'
+require 'facter'
+require 'mixlib/shellout'
+require 'mixlib/shellout/exceptions'
+
+class BuildHelper < Clamp::Command
+
+  parameter 'PLATFORM', 'platform for build', attribute_name: :platform
+
+  def execute
+    setup
+    build
+  end
+
+  private
+
+  def run!(*args)
+    cmd = Mixlib::ShellOut.new(*args, { live_stream: STDOUT, timeout: 7200 })
+    cmd.run_command
+    cmd.error!
+    cmd
+  end
+
+  def fatal(msg)
+    STDERR.puts(msg)
+    exit 1
+  end
+
+  def package_pattern
+    case platform
+    when /^(debian|ubuntu).*/
+      '*.deb'
+    when /^(redhat|centos).*/
+      '*.rpm'
+    else
+      fatal "platform #{platform} not supported"
+    end
+  end
+
+  def setup_apt
+    run!(%Q{echo "deb file:///repo #{platform} main" > /etc/apt/sources.list.d/fpm-recipes.list})
+    run!(%Q{echo 'APT::Get::AllowUnauthenticated yes;' > /etc/apt/apt.conf.d/99auth})
+    run!('apt-get update')
+    run!('apt-get upgrade -y')
+  end
+
+  def setup_yum
+    repo_config <<-EOS
+      [fpm-recipes]
+      name=FPM Recipes
+      baseurl=file:///repo
+      enabled=1
+      gpgcheck=0
+      sslverify=false
+    EOS
+    File.write('/etc/yum.repos.d/fpm-recipes.repo', repo_config)
+
+    run!('yum makecache')
+    run!('yum update -y')
+  end
+
+  def setup
+    case platform
+    when /^(debian|ubuntu).*/
+      setup_apt
+    when /^(redhat|centos).*/
+      setup_yum
+    else
+      fatal "platform #{platform} not supported"
+    end
+  end
+
+  def cleanup
+    Dir.chdir('/build') do
+      %w[ cache tmp-build tmp-dest pkg ].each do |dir|
+        FileUtils.rm_rf dir
+      end
+    end
+  end
+
+  def build
+    begin
+      Dir.chdir('/build') do
+        run!('bundle install') if File.exist?('Gemfile')
+        run!('fpm-cook clean')
+        run!('fpm-cook install-build-deps')
+        run!('fpm-cook package')
+        FileUtils.mkdir_p File.join('packages', platform)
+        FileUtils.chmod_R 0777, 'packages'
+        Dir.glob("pkg/#{package_pattern}").each do |pkg|
+          FileUtils.cp(pkg, File.join('packages', platform))
+        end
+      end
+    ensure
+      cleanup
+    end
+  end
+end
+
+BuildHelper.run
