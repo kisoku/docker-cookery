@@ -1,5 +1,7 @@
+.bundle/
 coverage
 tmp
 pkg
+vendor/
 Gemfile.lock
 *.gem

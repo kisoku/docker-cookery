@@ -9,9 +9,9 @@ module DockerCookery
 
     def self.new(name, prefix='fpm-recipes')
       case name
-      when /ubuntu/
+      when /ubuntu|debian/
         Apt.new(name, prefix)
-      when /centos/
+      when /centos|redhat/
         Yum.new(name, prefix)
       end
     end
