@@ -1,7 +1,6 @@
 require 'clamp'
 require 'fpm/cookery/log/output/console'
 require 'docker-cookery/log'
-require 'docker-cookery/cli/composer'
 require 'docker-cookery/cli/image'
 require 'docker-cookery/cli/repo'
 require 'docker-cookery/cli/package'
