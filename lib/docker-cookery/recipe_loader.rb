@@ -57,14 +57,19 @@ module DockerCookery
         if const.is_a? Class and const < FPM::Cookery::BaseRecipe
           const
         else
-          nil
+          # this will cause a nil to be added to the collection, which must be
+          # removed before proceeding
+          next
         end
       end
 
+      # strip all nil values from our collection of constants
+      recipes.reject! {|x| x.nil? }
+
       if recipes.length > 1
-        raise RuntimeError, "More than one recipe defined in #{path}"
+        raise RuntimeError, "More than one recipe defined in recipe: #{recipe}"
       elsif recipes.empty?
-        raise RuntimeError, "No recipes found in #{path}"
+        raise RuntimeError, "No valid recipes found while attempting to load recipe: #{recipe}"
       else
         recipes.first
       end
