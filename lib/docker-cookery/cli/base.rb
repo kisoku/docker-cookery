@@ -1,4 +1,5 @@
 require 'clamp'
+require 'docker-cookery/log'
 
 module DockerCookery
   module CLI
