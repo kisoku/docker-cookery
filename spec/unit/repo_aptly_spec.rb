@@ -73,7 +73,7 @@ describe DockerCookery::Repo::Aptly do
     end
 
     context 'package does not exist' do
-      let (:status) { 1 }
+      let (:exitstatus) { 1 }
       let (:stderr) { '' }
       let (:stdout) { 'ERROR: no results' }
 
