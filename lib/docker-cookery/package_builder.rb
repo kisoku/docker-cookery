@@ -34,6 +34,10 @@ module DockerCookery
       File.expand_path(File.join(recipe_path, package))
     end
 
+    def helper_dir
+      File.join(File.dirname(__FILE__), 'helpers')
+    end
+
     def wants_to_build?
       if config.force?
         true
@@ -42,26 +46,29 @@ module DockerCookery
       end
     end
 
-    def build
+    def build_cmd
       cmd = "docker run"
       cmd << " -i"
       cmd << " --rm=#{config.rm?}"
       config.environment.each do |env|
         cmd << " -e '#{env}'"
       end
-      cmd << " -v #{File.join(File.dirname(__FILE__), 'helpers')}:/helpers"
+      cmd << " -v #{helper_dir}:/helpers"
       cmd << " -v #{package_dir}:/build"
       cmd << " -v #{repo.path}:/repo"
       config.volumes.each do |volume|
         cmd << " -v #{volume}"
       end
       cmd << " fpm_docker/#{image} /helpers/cook #{image}"
+      cmd
+    end
 
+    def build
       Dir.chdir(recipe_path) do
         if wants_to_build?
           Log.puts "Building #{package} from: #{package_dir}"
-          Log.debug "Running build with command: #{cmd}"
-          run!(cmd, { live_stream: STDOUT, timeout: config.timeout })
+          Log.debug "Running build with command: #{build_cmd}"
+          run!(build_cmd, { live_stream: STDOUT, timeout: config.timeout })
           publish
         else
           Log.puts "Package #{package} already in repo #{repo.name}, skipping"
