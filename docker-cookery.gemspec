@@ -28,4 +28,5 @@ Gem::Specification.new do |s|
   s.add_dependency 'clamp', '~> 0.6'
   s.add_dependency 'fpm-cookery', '~> 0.30'
   s.add_dependency 'mixlib-shellout', '~> 2.2'
+  s.add_dependency 'mixlib-config', '~> 2.2'
 end
