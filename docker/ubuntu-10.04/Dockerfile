@@ -4,7 +4,7 @@ MAINTAINER Mathieu Sauve-Frankel <msf@kisoku.net>
 
 ENV DEBIAN_FRONTEND noninteractive
 
-RUN && apt-get update -qq && apt-get upgrade -y \
+RUN apt-get update -qq && apt-get upgrade -y \
     && apt-get install -y python-software-properties \
     && add-apt-repository ppa:git-core \
     && apt-get install -y \
