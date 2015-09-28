@@ -24,7 +24,7 @@ module DockerCookery
       if dockerfile_exist?
         run!(cmd, {live_stream: STDOUT})
       else
-        puts "image #{name} does not exist in docker_dir #{self.class.docker_dir}"
+        Log.puts "image #{name} does not exist in docker_dir #{self.class.docker_dir}"
         exit 1
       end
     end
