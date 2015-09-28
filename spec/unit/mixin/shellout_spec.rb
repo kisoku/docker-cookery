@@ -1,4 +1,4 @@
-require_relative '../spec_helper.rb'
+require_relative '../../spec_helper.rb'
 
 describe DockerCookery::Shellout do
   subject { Class.new { include DockerCookery::Shellout }.new }

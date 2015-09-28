@@ -1,4 +1,4 @@
-require_relative '../spec_helper.rb'
+require_relative '../../spec_helper.rb'
 
 describe DockerCookery::Repo::Aptly do
   let (:status) { double('Process::Status', :exitstatus => exitstatus) }
