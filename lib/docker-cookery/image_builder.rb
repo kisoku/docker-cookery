@@ -2,7 +2,7 @@ require 'docker-cookery/log'
 require 'docker-cookery/mixin/shellout'
 
 module DockerCookery
-  class Image
+  class ImageBuilder
     include Shellout
 
     attr_accessor :name, :config

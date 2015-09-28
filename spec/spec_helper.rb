@@ -14,7 +14,8 @@ RSpec.configure do |config|
 end
 
 require 'docker-cookery/build_manager'
+require 'docker-cookery/image_builder'
 require 'docker-cookery/mixin/shellout'
+require 'docker-cookery/package_builder'
 require 'docker-cookery/repo'
 require 'docker-cookery/recipe_loader'
-require 'docker-cookery/package_builder'

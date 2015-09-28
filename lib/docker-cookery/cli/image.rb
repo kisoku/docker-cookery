@@ -1,5 +1,5 @@
 require 'docker-cookery/cli/base'
-require 'docker-cookery/image'
+require 'docker-cookery/image_builder'
 require 'docker-cookery/log'
 require 'docker-cookery/mixin/shellout'
 
@@ -24,7 +24,7 @@ module DockerCookery
 
         def exec
           images.each do |image|
-            image = DockerCookery::Image.new(image, {force: force?, rm: rm?})
+            image = DockerCookery::ImageBuilder.new(image, {force: force?, rm: rm?})
             image.build
           end
         end
