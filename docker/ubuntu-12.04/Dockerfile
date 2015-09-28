@@ -32,7 +32,7 @@ RUN git clone https://github.com/sstephenson/rbenv /usr/local/rbenv \
     && echo 'export PATH="$RBENV_ROOT/bin:$PATH"' >> /etc/profile.d/rbenv.sh \
     && echo 'eval "$(rbenv init -)"' >> /etc/profile.d/rbenv.sh \
     && chmod +x /etc/profile.d/rbenv.sh \
-    && bash -lc 'rbenv install 2.1.7 && rbenv global 2.1.7' \
+    && bash -lc 'rbenv install -v 2.1.7 && rbenv global 2.1.7' \
     && ln -s /usr/local/rbenv/versions/2.1.7/bin/ruby /usr/bin/ruby
 
 RUN bash -lc 'gem install --no-rdoc --no-ri --verbose bundler' \
