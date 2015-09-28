@@ -22,7 +22,7 @@ module DockerCookery
       cmd << " --no-cache=#{config.force?}"
       cmd << " #{self.class.docker_dir}/#{name}"
       if dockerfile_exist?
-        run!(cmd, {live_stream: STDOUT})
+        run!(cmd, {live_stream: STDOUT, timeout: config.timeout})
       else
         Log.puts "image #{name} does not exist in docker_dir #{self.class.docker_dir}"
         exit 1

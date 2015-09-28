@@ -22,7 +22,7 @@ describe DockerCookery::ImageBuilder do
 
       it do
         subject.build
-        expect(subject).to have_received(:run!).with("docker build -t fpm_docker/#{subject.name} --rm=#{subject.config.rm?} --no-cache=#{subject.config.force?} #{docker_dir}/#{subject.name}", {live_stream: STDOUT})
+        expect(subject).to have_received(:run!).with("docker build -t fpm_docker/#{subject.name} --rm=#{subject.config.rm?} --no-cache=#{subject.config.force?} #{docker_dir}/#{subject.name}", {live_stream: STDOUT, timeout: subject.config.timeout})
       end
     end
 
