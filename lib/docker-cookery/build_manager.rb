@@ -36,8 +36,8 @@ module DockerCookery
         Log.puts "Tracking build state in stamp_dir: #{stamp_dir}"
         repo.create
         queue = create_build_queue(package)
-        queue.each do |pkg_builder|
-          pkg_builder.build
+        queue.each do |pkg|
+          build_package(pkg)
         end
       ensure
         Log.puts "Cleaning up stamp_dir: #{stamp_dir}"
