@@ -10,7 +10,7 @@ module DockerCookery
       class ListCommand < BaseCommand
         def exec
           DockerCookery::Log.puts 'available images:'
-          DockerCookery::Image.find_all.each do |i|
+          DockerCookery::ImageBuilder.find_all.each do |i|
             Log.puts "\t#{i}"
           end
         end
@@ -24,7 +24,7 @@ module DockerCookery
 
         def exec
           images.each do |image|
-            image = DockerCookery::ImageBuilder.new(image, {force: force?, rm: rm?})
+            image = DockerCookery::ImageBuilder.new(image)
             image.build
           end
         end

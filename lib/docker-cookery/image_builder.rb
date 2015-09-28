@@ -1,3 +1,4 @@
+require 'docker-cookery/config'
 require 'docker-cookery/log'
 require 'docker-cookery/mixin/shellout'
 
@@ -5,17 +6,20 @@ module DockerCookery
   class ImageBuilder
     include Shellout
 
-    attr_accessor :name, :config
+    attr_accessor :name
 
-    def initialize(name, config = {force: false, rm: true})
+    def initialize(name)
       @name = name
-      @config = config
+    end
+
+    def config
+      DockerCookery::Config
     end
 
     def build
       cmd = "docker build -t fpm_docker/#{name}"
-      cmd << " --rm=#{config[:rm]}"
-      cmd << " --no-cache=#{config[:force]}"
+      cmd << " --rm=#{config.rm?}"
+      cmd << " --no-cache=#{config.force?}"
       cmd << " #{self.class.docker_dir}/#{name}"
       if dockerfile_exist?
         run!(cmd, {live_stream: STDOUT})

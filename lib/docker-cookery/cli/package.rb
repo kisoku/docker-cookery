@@ -15,14 +15,12 @@ module DockerCookery
         option ['-v', '--volume'], 'VOLUME', 'additional volumes to mount in the container', multivalued: true,
           attribute_name: :volumes
 
-
         parameter 'RECIPE', 'recipe to build', attribute_name: :recipe
         parameter 'IMAGE', 'image to build on', attribute_name: :image
 
         def exec
           recipe_dir = File.expand_path(recipe)
-          options = {environment: environment, force: force?, rm: rm?, prefix: prefix, volumes: volumes}
-          build_mgr = DockerCookery::BuildManager.new(recipe, image, recipe_path, options)
+          build_mgr = DockerCookery::BuildManager.new(recipe, image, recipe_path)
           build_mgr.build
         end
       end
