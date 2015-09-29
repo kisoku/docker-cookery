@@ -9,11 +9,13 @@ describe DockerCookery::ImageBuilder do
   let (:image) { 'ubuntu-14.04' }
   let (:docker_dir) { '/dock_of_the_bay' }
   let (:dockerfiles) { [ "#{docker_dir}/ubuntu-14.04/Dockerfile" ] }
+  let (:shellout_options) { { live_stream: STDOUT, timeout: subject.config.timeout } }
 
   describe '#build' do
     subject { DockerCookery::ImageBuilder.new(image) }
 
     context 'builds a docker image when Dockerfile exists' do
+
       before do
         allow(DockerCookery::ImageBuilder).to receive(:docker_dir).and_return(docker_dir)
         allow_any_instance_of(DockerCookery::ImageBuilder).to receive(:dockerfile_exist?).and_return(true)
@@ -22,7 +24,7 @@ describe DockerCookery::ImageBuilder do
 
       it do
         subject.build
-        expect(subject).to have_received(:run!).with("docker build -t fpm_docker/#{subject.name} --rm=#{subject.config.rm?} --no-cache=#{subject.config.force?} #{docker_dir}/#{subject.name}", {live_stream: STDOUT, timeout: subject.config.timeout})
+        expect(subject).to have_received(:run!).with(subject.build_cmd, shellout_options)
       end
     end
 

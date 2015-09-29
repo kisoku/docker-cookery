@@ -13,6 +13,7 @@ module DockerCookery
     default :prefix, 'docker-cookery'
     default :timeout, 4800
     default :volumes, []
+    default :docker_org, 'fpmcookery'
 
   end
 end

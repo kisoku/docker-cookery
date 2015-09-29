@@ -59,7 +59,7 @@ module DockerCookery
       config.volumes.each do |volume|
         cmd << " -v #{volume}"
       end
-      cmd << " fpm_docker/#{image} /helpers/cook #{image}"
+      cmd << " #{config.docker_org}/#{image} /helpers/cook #{image}"
       cmd
     end
 

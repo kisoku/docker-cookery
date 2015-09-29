@@ -16,13 +16,17 @@ module DockerCookery
       DockerCookery::Config
     end
 
-    def build
-      cmd = "docker build -t fpm_docker/#{name}"
+    def build_cmd
+      cmd = "docker build -t #{config.docker_org}/#{name}"
       cmd << " --rm=#{config.rm?}"
       cmd << " --no-cache=#{config.force?}"
       cmd << " #{self.class.docker_dir}/#{name}"
+      cmd
+    end
+
+    def build
       if dockerfile_exist?
-        run!(cmd, {live_stream: STDOUT, timeout: config.timeout})
+        run!(build_cmd, {live_stream: STDOUT, timeout: config.timeout})
       else
         Log.puts "image #{name} does not exist in docker_dir #{self.class.docker_dir}"
         exit 1
