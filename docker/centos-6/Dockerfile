@@ -1,4 +1,4 @@
-FROM tianon/centos:6.5
+FROM centos:6
 
 MAINTAINER Mathieu Sauve-Frankel <msf@kisoku.net>
 
