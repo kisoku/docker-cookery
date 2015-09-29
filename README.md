@@ -12,6 +12,9 @@ Currently the following platforms are supported
 * Ubuntu 12.04 LTS
 * Ubuntu 14.04 LTS
 * Centos 6
+* Centos 7
+* Debian 7
+* Debian 8
 
 ## Getting Started
 
