@@ -47,7 +47,7 @@ class BuildHelper < Clamp::Command
   end
 
   def setup_yum
-    repo_config <<-EOS
+    repo_config = <<-EOS.gsub(/^\s+/, '') # Remove indentation to remove yum errors.
       [fpm-recipes]
       name=FPM Recipes
       baseurl=file:///repo
