@@ -16,7 +16,6 @@ Gem::Specification.new do |s|
   s.bindir = 'bin'
   s.executables = %w[ docker-cook ]
 
-  s.add_development_dependency 'rubygems-tasks', '~> 0.2'
   s.add_development_dependency 'rake', '~> 10.4'
   s.add_development_dependency 'fuubar', '~> 2.0'
   s.add_development_dependency 'rspec', '~> 3.1'
