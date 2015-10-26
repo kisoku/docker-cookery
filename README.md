@@ -1,8 +1,7 @@
 # docker-cookery
 
-[![Build Status](https://img.shields.io/travis/kisoku/docker-cookery)](https://travis-ci.org/kisoku/docker-cookery)
-
-[![Code Climate](https://img.shields.io/codeclimate/github/kisoku/docker-cookery)](https://codeclimate.com/github/kisoku/docker-cookery)
+[![Build Status](https://img.shields.io/travis/kisoku/docker-cookery.svg)](https://travis-ci.org/kisoku/docker-cookery)
+[![Code Climate](https://img.shields.io/codeclimate/github/kisoku/docker-cookery.svg)](https://codeclimate.com/github/kisoku/docker-cookery)
 
 docker-cookery is a build system built around docker, fpm-cookery and aptly
 that permits you to perform multi platform builds of fpm-cookery recipes from a
