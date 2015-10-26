@@ -69,9 +69,8 @@ describe DockerCookery::BuildManager do
     before do
       allow(FileUtils).to receive(:touch)
       allow(File).to receive(:exist?).and_return(false)
-      allow_any_instance_of(DockerCookery::PackageBuilder).to receive(:has_gemfile?).and_return(false)
+      allow_any_instance_of(DockerCookery::RecipeLoader).to receive(:has_gemfile?).and_return(false)
       allow_any_instance_of(DockerCookery::PackageBuilder).to receive(:build)
-      allow(FileUtils).to receive(:touch)
     end
 
     context 'checks to see if the stamp exists' do
