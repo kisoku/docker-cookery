@@ -1,4 +1,3 @@
 rvm:
-  - '2.1'
-bundler_args: "--binstubs=$PWD/bin --jobs 3 --retry 3"
+  - '2.1.7'
 script: './bin/rake spec'
