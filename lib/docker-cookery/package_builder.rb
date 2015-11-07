@@ -93,7 +93,17 @@ module DockerCookery
       package_pattern = "#{package}*#{recipe.version}*#{repo.package_suffix}"
 
       Dir.chdir(package_dir) do
+        Log.debug "Find packages with pattern: #{package_pattern}"
         packages = Dir.glob("packages/#{repo.distribution}/#{package_pattern}")
+
+        # The recipe version can include the epoch for deb packages. (i.e. "2:1.2.1")
+        # This epoch number is not encoded in the package filename!
+        if packages.empty?
+          package_pattern_epoch = "#{package}*#{recipe.version.split(':', 2).last}*#{repo.package_suffix}"
+          Log.debug "Retry without epoch in pattern: #{package_pattern_epoch}"
+          packages = Dir.glob("packages/#{repo.distribution}/#{package_pattern_epoch}")
+        end
+
         if not packages.empty?
           packages.each do |pkg|
             repo.add_package(pkg)

@@ -121,6 +121,33 @@ describe DockerCookery::PackageBuilder do
       end
     end
 
+    context 'it publishes packages with an epoch in their version after they are built' do
+      let (:package) { 'epoch' }
+
+      let (:epoch_version) { subject.recipe.version.split(':', 2).last }
+
+      let (:package_files) { [
+        "packages/#{subject.repo.distribution}/#{subject.package}*#{epoch_version}*#{subject.repo.package_suffix}"
+      ] }
+
+      before do
+        allow(Dir).to receive(:glob).with(
+          "packages/#{subject.repo.distribution}/#{subject.package}*#{subject.recipe.version}*#{subject.repo.package_suffix}"
+        ).and_return([])
+        allow(Dir).to receive(:glob).with(
+          "packages/#{subject.repo.distribution}/#{subject.package}*#{epoch_version}*#{subject.repo.package_suffix}"
+        ).and_return(package_files)
+        allow_any_instance_of(DockerCookery::Repo::Aptly).to receive(:exist?).and_return(false)
+        allow_any_instance_of(DockerCookery::Repo::Aptly).to receive(:add_package)
+        allow_any_instance_of(DockerCookery::Repo::Aptly).to receive(:publish)
+      end
+
+      it do
+        subject.publish
+        expect(subject.repo).to have_received(:add_package).with(package_files.first)
+      end
+    end
+
     context 'it raises SystemExit if no packages are found' do
       let (:package_files) { [] }
 
